@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LoopLive 管理者向け手順書</title>
+  <meta name="description" content="LoopLive 管理者向け操作手順" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へスキップ</a>
+  <div class="layout">
+    <nav class="nav" aria-label="目次" id="tocNav">
+      <div class="nav__top">
+        <p class="nav__title"><a href="index.html">LoopLive 操作手順</a></p>
+        <div class="nav__actions">
+          <button class="theme-toggle" id="themeToggle" type="button">ダーク</button>
+          <button class="nav__menu-btn" id="navMenuBtn" type="button" aria-controls="navList" aria-expanded="false">メニュー</button>
+        </div>
+      </div>
+      <ul class="nav__list" id="navList">
+        <li><a href="index.html">入口ページ</a></li>
+        <li><a href="user.html">ユーザー向け</a></li>
+        <li><a href="#admin-1">1. 初期設定</a></li>
+        <li><a href="#admin-2">2. 配信者を追加</a></li>
+        <li><a href="#admin-3">3. 写真フェイススワップ</a></li>
+        <li><a href="#admin-4">4. 利用料金確認</a></li>
+        <li><a href="#admin-5">5. ユーザー情報変更</a></li>
+        <li><a href="#common">共通情報</a></li>
+      </ul>
+    </nav>
+    <main id="main">
+      <header class="hero">
+        <h1>管理者向け手順書</h1>
+        <p>初期設定、配信者追加、写真フェイススワップ、利用料金確認、ユーザー情報変更の手順です。</p>
+      </header>
+
+      <section id="admin-1">
+        <h2>1. 初期設定</h2>
+        <p class="lead">目標: 管理者自身のアカウント作成と、有効化待ちまで完了する。</p>
+        <div class="step-shots" aria-label="管理者初期設定">
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">1</span><span class="step-shot__title">アクセスとアカウント作成タブ</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>LoopLive にアクセスし、<span class="code">アカウント作成</span> タブを選択</p></div><figure class="figure-step"><img src="assets/guides/guide1-00-access-signup.png" alt="アクセスとアカウント作成タブ" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-00-access-signup.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">2</span><span class="step-shot__title">利用規約の同意</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>利用規約をスクロールし、<span class="code">同意する</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide1-01-terms-scroll.png" alt="利用規約スクロール" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-01-terms-scroll.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide1-02-agree-terms.png" alt="同意する" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-02-agree-terms.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">3</span><span class="step-shot__title">Email / パスワード入力〜作成</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">Email</span> と <span class="code">パスワード</span> を入力し <span class="code">アカウントを作る</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide1-04-email-password.png" alt="Emailとパスワード入力" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-04-email-password.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide1-05-create-account.png" alt="アカウントを作る" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-05-create-account.png</span></p></figure></article>
+          <article class="step-shot step-shot--supplement"><header class="step-shot__head step-shot__head--supplement"><span class="step-shot__badge">運用</span><span class="step-shot__title">有効化待ち</span></header><div class="step-shot__text step-shot__text--supplement"><p>アカウント作成後は、サービス提供元に連絡し、有効化されるまで待ってください。</p></div></article>
+        </div>
+      </section>
+
+      <section id="admin-2">
+        <h2>2. 配信者を追加する</h2>
+        <p class="lead">目標: 配信者のアカウント作成後、管理者が権限と顔画像設定を反映する。</p>
+        <div class="step-shots" aria-label="配信者追加">
+          <article class="step-shot step-shot--supplement"><header class="step-shot__head step-shot__head--supplement"><span class="step-shot__badge">前提</span><span class="step-shot__title">配信者側のアカウント作成</span></header><div class="step-shot__text step-shot__text--supplement"><p>配信者には「1. 初期設定」の手順（アカウント作成）を実施してもらってください。</p></div></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">1</span><span class="step-shot__title">ユーザー管理を開く</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">ユーザーを管理する</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide1-06-user-mgmt.png" alt="ユーザーを管理する" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-06-user-mgmt.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">2</span><span class="step-shot__title">対象配信者を選択して編集</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>対象カードをクリックし、<span class="code">編集</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide1-07-user-card.png" alt="対象ユーザー選択" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-07-user-card.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide1-08-user-detail-edit.png" alt="編集を押す" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-08-user-detail-edit.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">3</span><span class="step-shot__title">権限・顔画像設定と更新</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">権限</span> と顔画像（<span class="code">source_file</span>）を設定し、<span class="code">更新</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide1-09-role.png" alt="権限設定" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-09-role.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide1-12-update-user.png" alt="更新" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-12-update-user.png</span></p></figure></article>
+        </div>
+      </section>
+
+      <section id="admin-3">
+        <h2>3. 写真フェイススワップ</h2>
+        <p class="lead">目標: 写真フェイススワップを実行し、結果をダウンロードする。</p>
+        <div class="step-shots" aria-label="写真フェイススワップ">
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">1</span><span class="step-shot__title">画像2枚を選択</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">元の顔を選択</span> と <span class="code">なりたい顔を選択</span> で画像をアップロード</p></div><figure class="figure-step"><img src="assets/guides/guide3-01-face-a.png" alt="元の顔" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide3-01-face-a.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide3-02-face-b.png" alt="なりたい顔" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide3-02-face-b.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">2</span><span class="step-shot__title">フェイススワップを実行</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">フェイススワップする</span> → 確認ダイアログで <span class="code">はい</span></p></div><figure class="figure-step"><img src="assets/guides/guide3-04-swap-start.png" alt="フェイススワップする" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide3-04-swap-start.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide3-05-confirm.png" alt="確認ダイアログ" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide3-05-confirm.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">3</span><span class="step-shot__title">完了待ちとダウンロード</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>処理履歴が <span class="code">完了</span> になるまで待ち、<span class="code">結果</span> をダウンロード</p></div><figure class="figure-step"><img src="assets/guides/guide3-07-history-done.png" alt="完了" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide3-07-history-done.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide3-08-download.png" alt="ダウンロード" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide3-08-download.png</span></p></figure></article>
+        </div>
+      </section>
+
+      <section id="admin-4">
+        <h2>4. 利用料金を確認する</h2>
+        <p class="lead">目標: 利用時間・請求金額・利用履歴・フォトスワップ使用枚数を確認する。</p>
+        <div class="step-shots" aria-label="利用料金確認">
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">1</span><span class="step-shot__title">利用料金画面へ移動</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">サーバー使用料を見る</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide4-01-billing-link.png" alt="サーバー使用料を見る" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-01-billing-link.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">2</span><span class="step-shot__title">合計値と明細を確認</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">合計利用時間</span> / <span class="code">合計請求金額</span>、明細行を確認</p></div><figure class="figure-step"><img src="assets/guides/guide4-03-total-hours.png" alt="合計利用時間と合計請求金額" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-03-total-hours.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide4-05-row-click.png" alt="明細行クリック" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-05-row-click.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">3</span><span class="step-shot__title">利用履歴とフォトスワップ使用枚数</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>利用履歴ダイアログと <span class="code">フォトスワップ使用</span> を確認</p></div><figure class="figure-step"><img src="assets/guides/guide4-06-history-dialog.png" alt="利用履歴ダイアログ" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-06-history-dialog.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide4-08-photo-count.png" alt="フォトスワップ使用枚数" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-08-photo-count.png</span></p></figure></article>
+        </div>
+      </section>
+
+      <section id="admin-5">
+        <h2>5. ユーザー情報を変更する</h2>
+        <p class="lead">目標: ユーザーの検索・編集・削除を行う。</p>
+        <div class="step-shots" aria-label="ユーザー情報変更">
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">1</span><span class="step-shot__title">ユーザー管理を開く</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">ユーザーを管理する</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide4-09-user-mgmt-link.png" alt="ユーザーを管理する" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-09-user-mgmt-link.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">2</span><span class="step-shot__title">検索して対象ユーザーを選択</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>検索欄に条件を入力し、対象カードを選択</p></div><figure class="figure-step"><img src="assets/guides/guide4-10-search.png" alt="検索" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-10-search.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide4-11-user-card.png" alt="ユーザーカード選択" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-11-user-card.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">3</span><span class="step-shot__title">編集して更新</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">編集</span> → 必要項目（名前/Email/パスワード/権限）更新 → <span class="code">更新</span></p></div><figure class="figure-step"><img src="assets/guides/guide4-12-edit-user.png" alt="編集" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-12-edit-user.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide4-18-update.png" alt="更新" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-18-update.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">4</span><span class="step-shot__title">削除</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">削除</span> を押し、確認ダイアログで <span class="code">はい</span></p></div><figure class="figure-step"><img src="assets/guides/guide4-19-delete.png" alt="削除" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-19-delete.png</span></p></figure></article>
+        </div>
+      </section>
+
+      <section id="common">
+        <h2>共通情報</h2>
+        <h3>権限と行える操作</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>画面上の権限</th><th>行える操作</th></tr></thead>
+            <tbody>
+              <tr><td>一般</td><td>加工の開始・停止</td></tr>
+              <tr><td>クリエイター</td><td>加工の開始・停止、写真フェイススワップ</td></tr>
+              <tr><td>運用</td><td>加工の開始・停止、写真フェイススワップ、ユーザー管理、利用料金の確認</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <p>© 2025 Copel Inc. All rights reserved.</p>
+      </footer>
+    </main>
+  </div>
+  <script>
+    (function () {
+      const body = document.body;
+      const themeToggle = document.getElementById('themeToggle');
+      const nav = document.getElementById('tocNav');
+      const navMenuBtn = document.getElementById('navMenuBtn');
+      function getInitialTheme() {
+        const saved = localStorage.getItem('looplive-theme');
+        if (saved === 'dark' || saved === 'light') return saved;
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      function applyTheme(theme) {
+        body.dataset.theme = theme;
+        try { localStorage.setItem('looplive-theme', theme); } catch (e) {}
+        if (themeToggle) themeToggle.textContent = theme === 'dark' ? 'ライト' : 'ダーク';
+      }
+      applyTheme(getInitialTheme());
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          applyTheme(body.dataset.theme === 'dark' ? 'light' : 'dark');
+        });
+      }
+      if (navMenuBtn && nav) {
+        navMenuBtn.addEventListener('click', function () {
+          const isOpen = nav.classList.toggle('nav--open');
+          navMenuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
