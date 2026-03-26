@@ -26,6 +26,7 @@
         <p class="nav__title"><a href="index.html">LoopLive 操作手順</a></p>
         <div class="nav__actions">
           <button class="theme-toggle" id="themeToggle" type="button">ダーク</button>
+          <button class="view-toggle" id="viewToggle" type="button">スマホ</button>
           <button class="nav__menu-btn" id="navMenuBtn" type="button" aria-controls="navList" aria-expanded="false">メニュー</button>
         </div>
       </div>
@@ -123,8 +124,10 @@
     (function () {
       const body = document.body;
       const themeToggle = document.getElementById('themeToggle');
+      const viewToggle = document.getElementById('viewToggle');
       const nav = document.getElementById('tocNav');
       const navMenuBtn = document.getElementById('navMenuBtn');
+      const shotImages = Array.from(document.querySelectorAll('.step-shot img'));
       function getInitialTheme() {
         const saved = localStorage.getItem('looplive-theme');
         if (saved === 'dark' || saved === 'light') return saved;
@@ -135,10 +138,46 @@
         try { localStorage.setItem('looplive-theme', theme); } catch (e) {}
         if (themeToggle) themeToggle.textContent = theme === 'dark' ? 'ライト' : 'ダーク';
       }
+      function getInitialView() {
+        const saved = localStorage.getItem('looplive-view');
+        return saved === 'mobile' ? 'mobile' : 'desktop';
+      }
+      function updateShotsByView(view) {
+        shotImages.forEach(function (img) {
+          if (!img.dataset.pcSrc) {
+            img.dataset.pcSrc = img.getAttribute('src') || '';
+            img.dataset.mobileSrc = img.dataset.pcSrc.replace('assets/guides/', 'assets/guides/mobile/');
+            img.addEventListener('load', function () {
+              const shot = img.closest('.step-shot');
+              if (shot) shot.classList.remove('step-shot--missing');
+            });
+            img.addEventListener('error', function () {
+              const shot = img.closest('.step-shot');
+              if (shot) shot.classList.add('step-shot--missing');
+            });
+          }
+          const nextSrc = view === 'mobile' ? img.dataset.mobileSrc : img.dataset.pcSrc;
+          if (nextSrc && img.getAttribute('src') !== nextSrc) {
+            img.setAttribute('src', nextSrc);
+          }
+        });
+      }
+      function applyView(view) {
+        body.dataset.view = view;
+        try { localStorage.setItem('looplive-view', view); } catch (e) {}
+        if (viewToggle) viewToggle.textContent = view === 'mobile' ? 'PC' : 'スマホ';
+        updateShotsByView(view);
+      }
       applyTheme(getInitialTheme());
+      applyView(getInitialView());
       if (themeToggle) {
         themeToggle.addEventListener('click', function () {
           applyTheme(body.dataset.theme === 'dark' ? 'light' : 'dark');
+        });
+      }
+      if (viewToggle) {
+        viewToggle.addEventListener('click', function () {
+          applyView(body.dataset.view === 'mobile' ? 'desktop' : 'mobile');
         });
       }
       if (navMenuBtn && nav) {

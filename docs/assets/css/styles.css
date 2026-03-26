@@ -117,6 +117,7 @@ a:hover {
 }
 
 .theme-toggle,
+.view-toggle,
 .nav__menu-btn {
   border: 1px solid var(--border);
   background: var(--surface);
@@ -128,6 +129,7 @@ a:hover {
 }
 
 .theme-toggle:hover,
+.view-toggle:hover,
 .nav__menu-btn:hover {
   background: var(--accent-soft);
   color: var(--accent);
@@ -350,6 +352,26 @@ kbd,
 
 .site-footer p {
   margin: 0;
+}
+
+.mobile-warning {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border: 2px solid #ef4444;
+  background: #fef2f2;
+  color: #7f1d1d;
+  border-radius: var(--radius);
+  font-weight: 700;
+}
+
+body[data-theme="dark"] .mobile-warning {
+  background: #2a1116;
+  color: #fecaca;
+  border-color: #f87171;
+}
+
+body[data-view="desktop"] .mobile-only {
+  display: none;
 }
 
 .figure-step {

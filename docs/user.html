@@ -26,6 +26,7 @@
         <p class="nav__title"><a href="index.html">LoopLive 操作手順</a></p>
         <div class="nav__actions">
           <button class="theme-toggle" id="themeToggle" type="button">ダーク</button>
+          <button class="view-toggle" id="viewToggle" type="button">スマホ</button>
           <button class="nav__menu-btn" id="navMenuBtn" type="button" aria-controls="navList" aria-expanded="false">メニュー</button>
         </div>
       </div>
@@ -59,7 +60,8 @@
       <section id="user-2">
         <h2>2. リアルタイム加工</h2>
         <p class="lead">目標: 加工開始から加工停止まで実行し、必要に応じて加工後映像を確認する。</p>
-        <div class="step-shots" aria-label="ユーザー向けリアルタイム加工">
+        <p class="mobile-warning mobile-only">スマホ版ではリアルタイム加工を利用することはできません。</p>
+        <div class="step-shots realtime-mobile-hidden" aria-label="ユーザー向けリアルタイム加工">
           <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">1</span><span class="step-shot__title">ポータル — 加工を始める</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">加工を始める</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide2-01-start-streaming.png" alt="加工を始める" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide2-01-start-streaming.png</span></p></figure></article>
           <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">2</span><span class="step-shot__title">サーバー管理 — 入室</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>対象サーバーで <span class="code">入室</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide2-02-enter-room.png" alt="入室" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide2-02-enter-room.png</span></p></figure></article>
           <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">3</span><span class="step-shot__title">起動と準備完了の確認</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>必要時は <span class="code">起動する</span> → 確認ダイアログで <span class="code">はい</span>、<span class="code">準備完了</span> まで待機</p></div><figure class="figure-step"><img src="assets/guides/guide2-03-start-server.png" alt="起動する" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide2-03-start-server.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide2-05-server-ready.png" alt="準備完了" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide2-05-server-ready.png</span></p></figure></article>
@@ -70,8 +72,8 @@
           <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">6</span><span class="step-shot__title">加工後映像確認と停止</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>必要に応じて <span class="code">加工後の映像を見る</span>、終了時は <span class="code">加工停止</span> のあと <span class="code">停止する</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide2-12-preview-output.png" alt="加工後映像を見る" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide2-12-preview-output.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide2-13-process-stop.png" alt="加工停止" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide2-13-process-stop.png</span></p></figure></article>
           <article class="step-shot step-shot--supplement"><header class="step-shot__head step-shot__head--supplement"><span class="step-shot__badge">補足</span><span class="step-shot__title">停止処理中〜OFFまで待機</span></header><div class="step-shot__text step-shot__text--supplement"><p>終了時は必ず <span class="code">停止する</span> を実行し、状態が <span class="code">停止処理中</span> から <span class="code">OFF</span> になるまで待ってください。完了まで数分、長いと10分ほどかかる場合があります。</p><p>停止せずに画面を閉じるとサーバー稼働が継続し、サービス利用料が発生する可能性があります。</p></div></article>
         </div>
-        <h3>補足（所要時間）</h3>
-        <ul class="info-list">
+        <h3 class="realtime-mobile-hidden">補足（所要時間）</h3>
+        <ul class="info-list realtime-mobile-hidden">
           <li>起動後は <span class="code">起動処理中</span> → <span class="code">準備中</span> → <span class="code">準備完了</span> と遷移し、数分かかる場合があります。</li>
           <li><span class="code">加工開始</span> 後に <span class="code">加工処理中…</span> になるまで数分かかる場合があります。</li>
           <li>停止時は <span class="code">停止処理中</span> → <span class="code">OFF</span> 完了まで、数分〜約10分かかる場合があります。</li>
@@ -93,8 +95,10 @@
     (function () {
       const body = document.body;
       const themeToggle = document.getElementById('themeToggle');
+      const viewToggle = document.getElementById('viewToggle');
       const nav = document.getElementById('tocNav');
       const navMenuBtn = document.getElementById('navMenuBtn');
+      const shotImages = Array.from(document.querySelectorAll('.step-shot img'));
       function getInitialTheme() {
         const saved = localStorage.getItem('looplive-theme');
         if (saved === 'dark' || saved === 'light') return saved;
@@ -105,10 +109,46 @@
         try { localStorage.setItem('looplive-theme', theme); } catch (e) {}
         if (themeToggle) themeToggle.textContent = theme === 'dark' ? 'ライト' : 'ダーク';
       }
+      function getInitialView() {
+        const saved = localStorage.getItem('looplive-view');
+        return saved === 'mobile' ? 'mobile' : 'desktop';
+      }
+      function updateShotsByView(view) {
+        shotImages.forEach(function (img) {
+          if (!img.dataset.pcSrc) {
+            img.dataset.pcSrc = img.getAttribute('src') || '';
+            img.dataset.mobileSrc = img.dataset.pcSrc.replace('assets/guides/', 'assets/guides/mobile/');
+            img.addEventListener('load', function () {
+              const shot = img.closest('.step-shot');
+              if (shot) shot.classList.remove('step-shot--missing');
+            });
+            img.addEventListener('error', function () {
+              const shot = img.closest('.step-shot');
+              if (shot) shot.classList.add('step-shot--missing');
+            });
+          }
+          const nextSrc = view === 'mobile' ? img.dataset.mobileSrc : img.dataset.pcSrc;
+          if (nextSrc && img.getAttribute('src') !== nextSrc) {
+            img.setAttribute('src', nextSrc);
+          }
+        });
+      }
+      function applyView(view) {
+        body.dataset.view = view;
+        try { localStorage.setItem('looplive-view', view); } catch (e) {}
+        if (viewToggle) viewToggle.textContent = view === 'mobile' ? 'PC' : 'スマホ';
+        updateShotsByView(view);
+      }
       applyTheme(getInitialTheme());
+      applyView(getInitialView());
       if (themeToggle) {
         themeToggle.addEventListener('click', function () {
           applyTheme(body.dataset.theme === 'dark' ? 'light' : 'dark');
+        });
+      }
+      if (viewToggle) {
+        viewToggle.addEventListener('click', function () {
+          applyView(body.dataset.view === 'mobile' ? 'desktop' : 'mobile');
         });
       }
       if (navMenuBtn && nav) {
@@ -119,5 +159,10 @@
       }
     })();
   </script>
+  <style>
+    body[data-view="mobile"] #user-2 .realtime-mobile-hidden {
+      display: none;
+    }
+  </style>
 </body>
 </html>

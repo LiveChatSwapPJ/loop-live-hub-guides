@@ -1,8 +1,9 @@
 /**
- * Reads docs/index.html for assets/guides/*.png, captures matching screenshots via Playwright.
+ * Reads docs/*.html for assets/guides/*.png, captures matching screenshots via Playwright.
  * Requires loop-live-hub-front (3000) and API stub (4010). Optional: .env with LOOP_LIVE_HUB_* for login.
  * Uses POST http://localhost:4010/api/stub/capture/instance-status to toggle STOPPED ↔ LIVE_AVAILABLE for guide2 shots.
  * Override stub base with CAPTURE_STUB_URL if PORT is not 4010.
+ * Set CAPTURE_MOBILE=1 to save into docs/assets/guides/mobile.
  */
 import { chromium } from 'playwright';
 import dotenv from 'dotenv';
@@ -12,8 +13,15 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const GUIDES_ROOT = path.join(__dirname, '..');
-const OUT_DIR = path.join(GUIDES_ROOT, 'docs', 'assets', 'guides');
-const INDEX_HTML = path.join(GUIDES_ROOT, 'docs', 'index.html');
+const IS_MOBILE_CAPTURE = process.env.CAPTURE_MOBILE === '1';
+const OUT_DIR = IS_MOBILE_CAPTURE
+  ? path.join(GUIDES_ROOT, 'docs', 'assets', 'guides', 'mobile')
+  : path.join(GUIDES_ROOT, 'docs', 'assets', 'guides');
+const GUIDE_HTMLS = [
+  path.join(GUIDES_ROOT, 'docs', 'index.html'),
+  path.join(GUIDES_ROOT, 'docs', 'admin.html'),
+  path.join(GUIDES_ROOT, 'docs', 'user.html'),
+];
 const BASE = process.env.CAPTURE_BASE_URL || 'http://localhost:3000';
 const STUB_API = process.env.CAPTURE_STUB_URL || 'http://localhost:4010';
 const MOCK_INSTANCE = 'i-mockstub001';
@@ -31,17 +39,39 @@ function ensureMiniPng() {
   fs.writeFileSync(MINI_PNG, buf);
 }
 
-function listPngsFromIndex() {
-  const html = fs.readFileSync(INDEX_HTML, 'utf8');
+function listPngsFromHtml(pathname) {
+  if (!fs.existsSync(pathname)) return [];
+  const html = fs.readFileSync(pathname, 'utf8');
   const re = /assets\/guides\/([^"'>\s]+\.png)/g;
   const set = new Set();
   let m;
   while ((m = re.exec(html)) !== null) {
-    const name = m[1];
+    const name = m[1].replace(/^mobile\//, '');
     if (name.includes('guide1-01-xxx')) continue;
     set.add(name);
   }
   return [...set].sort();
+}
+
+function listPngsFromGuides() {
+  const set = new Set();
+  for (const h of GUIDE_HTMLS) {
+    for (const n of listPngsFromHtml(h)) set.add(n);
+  }
+  return [...set].sort();
+}
+
+function contextOptions(viewport) {
+  if (!IS_MOBILE_CAPTURE) {
+    return { viewport, locale: 'ja-JP' };
+  }
+  return {
+    viewport: { width: 390, height: 844 },
+    locale: 'ja-JP',
+    deviceScaleFactor: 2,
+    hasTouch: true,
+    isMobile: true,
+  };
 }
 
 async function shot(page, filename) {
@@ -86,10 +116,7 @@ async function tryLogin(page) {
 
 async function signUpScreenshots(browser) {
   const skipped = [];
-  const ctx = await browser.newContext({
-    viewport: { width: 1280, height: 800 },
-    locale: 'ja-JP',
-  });
+  const ctx = await browser.newContext(contextOptions({ width: 1280, height: 800 }));
   const page = await ctx.newPage();
   try {
     await page.goto(`${BASE}/?group_id=${SIGNUP_GROUP}`, { waitUntil: 'networkidle', timeout: 60000 });
@@ -133,7 +160,7 @@ async function signUpScreenshots(browser) {
 async function main() {
   ensureMiniPng();
   fs.mkdirSync(OUT_DIR, { recursive: true });
-  const pngList = listPngsFromIndex();
+  const pngList = listPngsFromGuides();
   const skipped = [];
   const saved = [];
 
@@ -144,10 +171,7 @@ async function main() {
 
   skipped.push(...(await signUpScreenshots(browser)));
 
-  const ctx = await browser.newContext({
-    viewport: { width: 1280, height: 900 },
-    locale: 'ja-JP',
-  });
+  const ctx = await browser.newContext(contextOptions({ width: 1280, height: 900 }));
   const page = await ctx.newPage();
 
   const loggedIn = await tryLogin(page);
