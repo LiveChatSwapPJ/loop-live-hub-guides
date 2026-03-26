@@ -419,6 +419,48 @@ kbd,
   color: var(--text);
 }
 
+/* カード内の手順文（キャプチャとセット） */
+.guide-intro {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.step-shot__text {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.step-shot__text p {
+  margin: 0.4rem 0;
+}
+
+.step-shot__text p:first-child {
+  margin-top: 0;
+}
+
+.step-shot__text p:last-child {
+  margin-bottom: 0;
+}
+
+.step-shot__label {
+  display: inline-block;
+  min-width: 5rem;
+  margin-right: 0.35rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
 .step-shot .figure-step {
   margin: 0;
 }

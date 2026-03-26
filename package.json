@@ -1,0 +1,12 @@
+{
+  "name": "loop-live-hub-guides-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "capture": "node scripts/capture-screens.mjs"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "playwright": "^1.49.0"
+  }
+}
