@@ -2,6 +2,38 @@
 
 LoopLive Web アプリの操作手順を、管理者向けとユーザー向けの2ページ構成で定義する。
 
+## サービスが利用できるようになるまで
+
+```mermaid
+flowchart TD
+  A[前提: サービス利用契約が完了していること]
+
+  subgraph SP[サービス提供元]
+    B[専用URLを発行]
+    F[報告されたアカウントを承認し<br/>管理者としての権限を付与]
+  end
+
+  subgraph AD[管理者側の操作]
+    C[発行されたURLで<br/>管理者のアカウントを作成<br/>（この時点ではログインのみ実施可能で、操作はできない状態）]
+    E[サービス提供元へ<br/>アカウント作成完了を報告]
+    G[再度ログインすると<br/>サービスを利用できるようになっている]
+  end
+
+  A --> B --> C --> E --> F --> G
+
+  classDef provider fill:#eef6ff,stroke:#3b82f6,color:#0f172a,stroke-width:1.5px;
+  classDef admin fill:#f0fdf4,stroke:#22c55e,color:#0f172a,stroke-width:1.5px;
+  classDef common fill:#fff7ed,stroke:#f59e0b,color:#0f172a,stroke-width:1.5px;
+  class A common;
+  class B,F provider;
+  class C,E,G admin;
+```
+
+### 補足（ユーザーアカウント運用）
+
+- ユーザーを追加する場合は、発行済みURLをユーザーへ共有してアカウントを作成してもらい、管理者が `ユーザー管理` 画面で承認（権限付与）する。
+- ユーザーが離任した場合は、管理者がユーザーアカウントを停止または削除できる。
+
 ---
 
 ## A. 管理者向け手順書（`docs/admin.html` 想定）

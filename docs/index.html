@@ -17,6 +17,75 @@
         max-width: min(1180px, calc(100vw - 4rem));
       }
     }
+    .flow-diagram {
+      display: grid;
+      gap: 0.9rem;
+      margin-top: 0.75rem;
+    }
+    .flow-arrow {
+      text-align: center;
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1;
+      user-select: none;
+    }
+    .flow-shared {
+      border: 2px solid #f59e0b;
+      background: #fff7ed;
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+    }
+    body[data-theme="dark"] .flow-shared {
+      background: #2b1a08;
+      border-color: #f59e0b;
+    }
+    .flow-sequence {
+      display: grid;
+      gap: 0.55rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .flow-step {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.7rem 0.85rem;
+      background: var(--surface);
+      display: grid;
+      gap: 0.35rem;
+    }
+    .flow-step--provider {
+      border-left: 6px solid #3b82f6;
+      background: #eef6ff;
+    }
+    .flow-step--admin {
+      border-left: 6px solid #22c55e;
+      background: #f0fdf4;
+    }
+    body[data-theme="dark"] .flow-step--provider {
+      background: #0f2745;
+    }
+    body[data-theme="dark"] .flow-step--admin {
+      background: #0f2a1a;
+    }
+    .flow-step__actor {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 0;
+    }
+    .flow-step__text {
+      margin: 0;
+    }
+    .flow-lane__title {
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+    }
+    .flow-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
@@ -42,7 +111,7 @@
       </header>
 
       <section>
-        <h2>手順書を選ぶ</h2>
+        <h2>手順書</h2>
         <div class="step-shots" aria-label="手順書選択">
           <article class="step-shot">
             <header class="step-shot__head">
@@ -50,7 +119,7 @@
               <span class="step-shot__title">管理者向け手順書</span>
             </header>
             <div class="step-shot__text">
-              <p>初期設定、配信者追加、写真フェイススワップ、利用料金確認、ユーザー情報変更をまとめています。</p>
+              <p>管理者向け機能の操作手順です。</p>
               <p><a href="admin.html">管理者向けページを開く</a></p>
             </div>
           </article>
@@ -64,6 +133,85 @@
               <p><a href="user.html">ユーザー向けページを開く</a></p>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section id="service-flow">
+        <h2>サービスが利用できるようになるまで</h2>
+        <p class="lead">契約後に管理者権限が有効化されるまでの流れです。</p>
+        <div class="flow-diagram" aria-label="サービス利用開始までの図">
+          <article class="flow-shared">
+            <p class="flow-lane__title">前提</p>
+            <p class="flow-note">サービス利用契約が完了していること</p>
+          </article>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <ol class="flow-sequence">
+            <li class="flow-step flow-step--provider">
+              <p class="flow-step__actor">サービス提供元</p>
+              <p class="flow-step__text">専用URLを発行する</p>
+            </li>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <li class="flow-step flow-step--admin">
+              <p class="flow-step__actor">管理者</p>
+              <p class="flow-step__text">発行されたURLで管理者のアカウントを作成する<br />（この時点ではログインのみ実施可能で、操作はできない状態）</p>
+            </li>
+            <li class="flow-step flow-step--admin">
+              <p class="flow-step__actor">管理者</p>
+              <p class="flow-step__text">サービス提供元へアカウント作成完了を報告する</p>
+            </li>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <li class="flow-step flow-step--provider">
+              <p class="flow-step__actor">サービス提供元</p>
+              <p class="flow-step__text">報告されたアカウントを承認し、管理者としての権限を付与する</p>
+            </li>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <li class="flow-step flow-step--admin">
+              <p class="flow-step__actor">管理者</p>
+              <p class="flow-step__text">再度ログインすると、サービスを利用できるようになっている</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="user-add-flow">
+        <h2>ユーザーを増やしたい場合</h2>
+        <p class="lead">顔交換機能の利用ユーザーを増やす場合の手順です。サービス提供元の承認等は不要です。</p>
+        <div class="flow-diagram" aria-label="ユーザーを増やす場合の図">
+          <article class="flow-shared">
+            <p class="flow-lane__title">前提</p>
+            <p class="flow-note">管理者アカウントが使用できるようになっていること</p>
+          </article>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <ol class="flow-sequence">
+            <li class="flow-step flow-step--provider">
+              <p class="flow-step__actor">管理者</p>
+              <p class="flow-step__text">ユーザーに専用URLを共有する</p>
+            </li>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <li class="flow-step flow-step--admin">
+              <p class="flow-step__actor">ユーザー</p>
+              <p class="flow-step__text">共有されたURLからアカウントを作成する<br />（この時点ではログインのみ実施可能で、操作はできない状態）</p>
+            </li>
+            <li class="flow-step flow-step--admin">
+              <p class="flow-step__actor">ユーザー</p>
+              <p class="flow-step__text">管理者へアカウント作成完了を報告する</p>
+            </li>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <li class="flow-step flow-step--provider">
+              <p class="flow-step__actor">管理者</p>
+              <p class="flow-step__text">作成されたアカウントに一般権限を付与する</p>
+            </li>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <li class="flow-step flow-step--admin">
+              <p class="flow-step__actor">ユーザー</p>
+              <p class="flow-step__text">再度ログインすると、顔交換加工機能のみが利用できるようになっている</p>
+            </li>
+          </ol>
+        </div>
+        <div class="step-shot" style="margin-top: 1rem;">
+          <div class="step-shot__text">
+            <p>ユーザーが離任した場合は、管理者がアカウントの停止または削除を行えます。</p>
+          </div>
         </div>
       </section>
 
