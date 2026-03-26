@@ -164,28 +164,11 @@ async function main() {
       await page.waitForTimeout(500);
       await shot(page, 'guide1-09-role.png');
       await shot(page, 'guide1-10-stream-accounts.png');
-      await page.locator('label').filter({ hasText: 'ソース画像' }).scrollIntoViewIfNeeded().catch(() => {});
-      await shot(page, 'guide1-11-source-image.png');
       await shot(page, 'guide1-12-update-user.png');
       await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
 
       await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
       await shot(page, 'guide1-13-portal-features.png');
-      await shot(page, 'guide1-14-server-master.png');
-
-      await page.goto(`${BASE}/master/servers`, { waitUntil: 'networkidle' });
-      await page.waitForTimeout(1200);
-      await shot(page, 'guide1-15-register-server.png');
-      await page.getByRole('button', { name: 'サーバー登録' }).click();
-      await page.waitForTimeout(800);
-      await page.getByLabel(/i-unregistered001|未登録EC2/).click().catch(async () => {
-        await page.getByRole('radio').first().click();
-      });
-      await shot(page, 'guide1-16-server-step1.png');
-      await page.getByRole('button', { name: '次へ' }).click();
-      await page.waitForTimeout(600);
-      await shot(page, 'guide1-17-server-step2.png');
-      await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
 
       await page.goto(`${BASE}/dashboard`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(1200);
@@ -214,7 +197,7 @@ async function main() {
       } else {
         skipped.push({
           file: 'guide2-03-start-server.png',
-          reason: 'スタブのサーバーは LIVE_AVAILABLE のため配信画面のサーバー状態欄に「起動する」は表示されない',
+          reason: 'スタブのサーバーは LIVE_AVAILABLE のためリアルタイム加工画面のサーバー状態欄に「起動する」は表示されない',
         });
         skipped.push({
           file: 'guide2-04-confirm-start.png',
@@ -276,15 +259,13 @@ async function main() {
       await shot(page, 'guide4-01-billing-link.png');
       await page.goto(`${BASE}/usage-billing`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(1200);
-      await shot(page, 'guide4-02-month-nav.png');
       await shot(page, 'guide4-03-total-hours.png');
-      await shot(page, 'guide4-04-total-cost.png');
       await shot(page, 'guide4-05-row-click.png');
       await page.locator('table tbody tr').first().click().catch(() => {});
       await page.waitForTimeout(500);
       await shot(page, 'guide4-06-history-dialog.png');
-      await shot(page, 'guide4-07-close-history.png');
       await page.getByRole('button', { name: '閉じる' }).click().catch(() => {});
+      await page.waitForTimeout(400);
       await shot(page, 'guide4-08-photo-count.png');
 
       await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
@@ -302,7 +283,6 @@ async function main() {
       await shot(page, 'guide4-14-password.png');
       await shot(page, 'guide4-15-role.png');
       await shot(page, 'guide4-16-stream-accounts.png');
-      await shot(page, 'guide4-17-source-image.png');
       await shot(page, 'guide4-18-update.png');
       await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
 
@@ -312,39 +292,6 @@ async function main() {
       await page.waitForTimeout(400);
       await shot(page, 'guide4-19-delete.png');
       await shot(page, 'guide4-20-confirm-delete.png');
-      await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
-
-      await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
-      await shot(page, 'guide4-21-master-link.png');
-
-      await page.goto(`${BASE}/master/servers`, { waitUntil: 'networkidle' });
-      await page.waitForTimeout(1200);
-      await shot(page, 'guide4-22-register.png');
-      await page.getByRole('button', { name: 'サーバー登録' }).click();
-      await page.waitForTimeout(800);
-      await page.getByLabel(/i-unregistered001|未登録EC2/).click().catch(async () => {
-        await page.getByRole('radio').first().click();
-      });
-      await shot(page, 'guide4-23-step1.png');
-      await page.getByRole('button', { name: '次へ' }).click();
-      await page.waitForTimeout(600);
-      await shot(page, 'guide4-24-step2.png');
-      await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
-
-      await page.waitForTimeout(400);
-      await page.locator('text=デモ用マネージドサーバー').first().click();
-      await page.waitForTimeout(500);
-      await shot(page, 'guide4-25-detail.png');
-      await page.getByRole('button', { name: '編集' }).click();
-      await page.waitForTimeout(400);
-      await shot(page, 'guide4-26-edit-server.png');
-      await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
-
-      await page.locator('text=デモ用マネージドサーバー').first().click();
-      await page.waitForTimeout(400);
-      await page.getByRole('button', { name: '削除' }).click();
-      await page.waitForTimeout(400);
-      await shot(page, 'guide4-27-delete-server.png');
       await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
     } catch (e) {
       skipped.push({ file: '(batch)', reason: String(e.message || e) });
