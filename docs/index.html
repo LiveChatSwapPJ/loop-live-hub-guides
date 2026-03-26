@@ -7,6 +7,17 @@
   <meta name="description" content="LoopLive 操作手順の入口ページ（管理者向け / ユーザー向け）" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    /* 入口ページは横幅を広めに使う（PC/スマホで崩れない範囲） */
+    main {
+      max-width: min(1100px, calc(100vw - 2rem));
+    }
+    @media (min-width: 640px) {
+      main {
+        max-width: min(1180px, calc(100vw - 4rem));
+      }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">本文へスキップ</a>

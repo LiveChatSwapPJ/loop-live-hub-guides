@@ -7,6 +7,16 @@
   <meta name="description" content="LoopLive 管理者向け操作手順" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    main {
+      max-width: min(1240px, calc(100vw - 2rem));
+    }
+    @media (min-width: 640px) {
+      main {
+        max-width: min(1360px, calc(100vw - 4rem));
+      }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">本文へスキップ</a>
@@ -54,7 +64,7 @@
           <article class="step-shot step-shot--supplement"><header class="step-shot__head step-shot__head--supplement"><span class="step-shot__badge">前提</span><span class="step-shot__title">配信者側のアカウント作成</span></header><div class="step-shot__text step-shot__text--supplement"><p>配信者には「1. 初期設定」の手順（アカウント作成）を実施してもらってください。</p></div></article>
           <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">1</span><span class="step-shot__title">ユーザー管理を開く</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">ユーザーを管理する</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide1-06-user-mgmt.png" alt="ユーザーを管理する" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-06-user-mgmt.png</span></p></figure></article>
           <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">2</span><span class="step-shot__title">対象配信者を選択して編集</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>対象カードをクリックし、<span class="code">編集</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide1-07-user-card.png" alt="対象ユーザー選択" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-07-user-card.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide1-08-user-detail-edit.png" alt="編集を押す" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-08-user-detail-edit.png</span></p></figure></article>
-          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">3</span><span class="step-shot__title">権限・顔画像設定と更新</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">権限</span> と顔画像（<span class="code">source_file</span>）を設定し、<span class="code">更新</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide1-09-role.png" alt="権限設定" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-09-role.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide1-12-update-user.png" alt="更新" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-12-update-user.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">3</span><span class="step-shot__title">権限・顔画像設定と更新</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">権限</span>（<a href="#common-permissions">権限の一覧</a>）と顔画像（<span class="code">source_file</span>）を設定し、<span class="code">更新</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide1-09-role.png" alt="権限設定" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-09-role.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide1-12-update-user.png" alt="更新" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide1-12-update-user.png</span></p></figure></article>
         </div>
       </section>
 
@@ -73,8 +83,8 @@
         <p class="lead">目標: 利用時間・請求金額・利用履歴・フォトスワップ使用枚数を確認する。</p>
         <div class="step-shots" aria-label="利用料金確認">
           <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">1</span><span class="step-shot__title">利用料金画面へ移動</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">サーバー使用料を見る</span> を押す</p></div><figure class="figure-step"><img src="assets/guides/guide4-01-billing-link.png" alt="サーバー使用料を見る" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-01-billing-link.png</span></p></figure></article>
-          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">2</span><span class="step-shot__title">合計値と明細を確認</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">合計利用時間</span> / <span class="code">合計請求金額</span>、明細行を確認</p></div><figure class="figure-step"><img src="assets/guides/guide4-03-total-hours.png" alt="合計利用時間と合計請求金額" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-03-total-hours.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide4-05-row-click.png" alt="明細行クリック" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-05-row-click.png</span></p></figure></article>
-          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">3</span><span class="step-shot__title">利用履歴とフォトスワップ使用枚数</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>利用履歴ダイアログと <span class="code">フォトスワップ使用</span> を確認</p></div><figure class="figure-step"><img src="assets/guides/guide4-06-history-dialog.png" alt="利用履歴ダイアログ" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-06-history-dialog.png</span></p></figure><figure class="figure-step"><img src="assets/guides/guide4-08-photo-count.png" alt="フォトスワップ使用枚数" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-08-photo-count.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">2</span><span class="step-shot__title">合計値と明細を確認</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span><span class="code">合計利用時間</span> / <span class="code">合計請求金額</span>、明細行を確認</p></div><figure class="figure-step"><img src="assets/guides/guide4-03-total-hours.png" alt="合計利用時間と合計請求金額" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-03-total-hours.png</span></p></figure></article>
+          <article class="step-shot"><header class="step-shot__head"><span class="step-shot__no">3</span><span class="step-shot__title">利用履歴とフォトスワップ使用枚数</span></header><div class="step-shot__text"><p><span class="step-shot__label">操作</span>利用履歴ダイアログと <span class="code">フォトスワップ使用</span> を確認</p></div><figure class="figure-step"><img src="assets/guides/guide4-06-history-dialog.png" alt="利用履歴ダイアログ" loading="lazy" /><p class="step-shot__placeholder" role="status">画像未配置<br /><span class="code">guide4-06-history-dialog.png</span></p></figure></article>
         </div>
       </section>
 
@@ -91,7 +101,7 @@
 
       <section id="common">
         <h2>共通情報</h2>
-        <h3>権限と行える操作</h3>
+        <h3 id="common-permissions">権限と行える操作</h3>
         <div class="table-wrap">
           <table>
             <thead><tr><th>画面上の権限</th><th>行える操作</th></tr></thead>
