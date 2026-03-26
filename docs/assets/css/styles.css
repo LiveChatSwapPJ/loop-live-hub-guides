@@ -345,6 +345,11 @@ kbd,
   border-top: 1px solid var(--border);
   font-size: 0.85rem;
   color: var(--muted);
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 0;
 }
 
 .figure-step {
@@ -494,4 +499,41 @@ kbd,
 
 .step-shot--missing .figure-step figcaption {
   opacity: 0.85;
+}
+
+/* OBS WebSocket などの補足カード */
+.step-shot--supplement {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  box-shadow: none;
+}
+
+.step-shot__head--supplement {
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.step-shot__badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: #fff;
+}
+
+.step-shot__text--supplement {
+  border-style: dashed;
+}
+.step-shot__ref {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+.step-shot__ref a {
+  color: var(--accent);
+  font-weight: 600;
 }

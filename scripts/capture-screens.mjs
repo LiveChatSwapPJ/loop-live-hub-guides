@@ -82,6 +82,7 @@ async function signUpScreenshots(browser) {
     const tabs = page.locator('[role="tab"]');
     if ((await tabs.count()) >= 2) await tabs.nth(1).click();
     await page.waitForTimeout(800);
+    await shot(page, 'guide1-00-access-signup.png');
 
     const dialog = page.getByRole('dialog', { name: /利用規約/i });
     await dialog.waitFor({ state: 'visible', timeout: 15000 });
@@ -96,14 +97,13 @@ async function signUpScreenshots(browser) {
     await page.getByRole('button', { name: '同意する' }).click();
 
     await page.waitForTimeout(600);
-    await shot(page, 'guide1-03-group-id.png');
     await shot(page, 'guide1-04-email-password.png');
     await shot(page, 'guide1-05-create-account.png');
   } catch (e) {
     for (const f of [
+      'guide1-00-access-signup.png',
       'guide1-01-terms-scroll.png',
       'guide1-02-agree-terms.png',
-      'guide1-03-group-id.png',
       'guide1-04-email-password.png',
       'guide1-05-create-account.png',
     ]) {
@@ -138,7 +138,7 @@ async function main() {
   const loggedIn = await tryLogin(page);
   if (!loggedIn) {
     for (const f of pngList) {
-      if (/^guide1-0[1-5]/.test(f)) continue;
+      if (/^guide1-0[0-5]/.test(f)) continue;
       skipped.push({
         file: f,
         reason: '未ログイン（.env に LOOP_LIVE_HUB_USER_ID / LOOP_LIVE_HUB_PASSWORD が無い、またはログイン失敗）',
@@ -163,12 +163,14 @@ async function main() {
       await page.getByRole('button', { name: '編集' }).click();
       await page.waitForTimeout(500);
       await shot(page, 'guide1-09-role.png');
-      await shot(page, 'guide1-10-stream-accounts.png');
       await shot(page, 'guide1-12-update-user.png');
       await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
 
       await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+      await waitPortal(page);
       await shot(page, 'guide1-13-portal-features.png');
+      await page.getByRole('button', { name: /配信を始める/ }).first().click().catch(() => {});
+      await page.waitForTimeout(600);
 
       await page.goto(`${BASE}/dashboard`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(1200);
@@ -242,10 +244,7 @@ async function main() {
         await shot(page, 'guide3-02-face-b.png');
       } else skipped.push({ file: 'guide3-02-face-b.png', reason: '2つ目のファイル入力なし' });
 
-      await page.getByRole('button', { name: 'クリア' }).click().catch(() => {});
-      await shot(page, 'guide3-03-clear.png');
-      await files.nth(0).setInputFiles(MINI_PNG).catch(() => {});
-      await files.nth(1).setInputFiles(MINI_PNG).catch(() => {});
+      await page.waitForTimeout(300);
       await shot(page, 'guide3-04-swap-start.png');
       await page.getByRole('button', { name: /フェイススワップする/ }).click().catch(() => {});
       await page.waitForTimeout(400);
@@ -282,7 +281,6 @@ async function main() {
       await shot(page, 'guide4-13-name-email.png');
       await shot(page, 'guide4-14-password.png');
       await shot(page, 'guide4-15-role.png');
-      await shot(page, 'guide4-16-stream-accounts.png');
       await shot(page, 'guide4-18-update.png');
       await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
 
@@ -291,7 +289,6 @@ async function main() {
       await page.getByRole('button', { name: '削除' }).click().catch(() => {});
       await page.waitForTimeout(400);
       await shot(page, 'guide4-19-delete.png');
-      await shot(page, 'guide4-20-confirm-delete.png');
       await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
     } catch (e) {
       skipped.push({ file: '(batch)', reason: String(e.message || e) });
