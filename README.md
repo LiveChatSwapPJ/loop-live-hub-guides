@@ -96,6 +96,7 @@ npm start
 - 撮りたい画面の **URL・権限** は [`LoopLiveの操作手順.md`](./LoopLiveの操作手順.md) の手順と、`loop-live-hub-front/documents/画面一覧.md` に合わせる。
 - 認証まわり（ログイン・サインアップ）は本番 Cognito の設定に依存する。スタブは API の見た目・一覧データの確認向きなので、**ログインが必要な画面**は開発用アカウントやモックの手順を別途確認する（フロントの `README.md`・`GEMINI.md` 等）。
 - フィクスチャの内容を変えたい場合は、スタブの `server.js` 内 `fixtures` を編集する（スタブ README 参照）。
+- リアルタイム加工で **サーバー状態に依存する画面**（例: 「起動する」ボタン、準備完了）は、スタブの **`POST /api/stub/capture/instance-status`** で `STOPPED` / `LIVE_AVAILABLE` などへ切り替え可能です（再起動不要・詳細はスタブ README）。`loop-live-hub-guides/scripts/capture-screens.mjs` も撮影の途中でこの API を呼び出します。スタブのポートを変えた場合は `CAPTURE_STUB_URL`（キャプチャ実行時のみ）を合わせてください。
 
 ---
 

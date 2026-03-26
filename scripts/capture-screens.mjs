@@ -1,6 +1,8 @@
 /**
  * Reads docs/index.html for assets/guides/*.png, captures matching screenshots via Playwright.
  * Requires loop-live-hub-front (3000) and API stub (4010). Optional: .env with LOOP_LIVE_HUB_* for login.
+ * Uses POST http://localhost:4010/api/stub/capture/instance-status to toggle STOPPED ↔ LIVE_AVAILABLE for guide2 shots.
+ * Override stub base with CAPTURE_STUB_URL if PORT is not 4010.
  */
 import { chromium } from 'playwright';
 import dotenv from 'dotenv';
@@ -13,6 +15,7 @@ const GUIDES_ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(GUIDES_ROOT, 'docs', 'assets', 'guides');
 const INDEX_HTML = path.join(GUIDES_ROOT, 'docs', 'index.html');
 const BASE = process.env.CAPTURE_BASE_URL || 'http://localhost:3000';
+const STUB_API = process.env.CAPTURE_STUB_URL || 'http://localhost:4010';
 const MOCK_INSTANCE = 'i-mockstub001';
 const SIGNUP_GROUP = 'abcdef';
 
@@ -49,6 +52,18 @@ async function shot(page, filename) {
 
 async function waitPortal(page) {
   await page.getByText('ポータルページ', { timeout: 120000 }).waitFor({ state: 'visible' });
+}
+
+async function setStubInstanceStatus(status) {
+  const res = await fetch(`${STUB_API}/api/stub/capture/instance-status`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`stub POST /api/stub/capture/instance-status failed ${res.status}: ${text}`);
+  }
 }
 
 async function tryLogin(page) {
@@ -184,27 +199,27 @@ async function main() {
       await page.waitForTimeout(600);
       await shot(page, 'guide2-02-enter-room.png');
 
+      await setStubInstanceStatus('STOPPED');
       await page.goto(`${BASE}/streaming/${MOCK_INSTANCE}`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(1500);
 
-      const startBtns = page.getByRole('button', { name: '起動する' });
-      const hasStart = (await startBtns.count()) > 0 && (await startBtns.first().isVisible().catch(() => false));
-
-      if (hasStart) {
+      try {
         await shot(page, 'guide2-03-start-server.png');
         await page.getByRole('button', { name: '起動する' }).first().click();
         await page.waitForTimeout(500);
         await shot(page, 'guide2-04-confirm-start.png');
         await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
-      } else {
-        skipped.push({
-          file: 'guide2-03-start-server.png',
-          reason: 'スタブのサーバーは LIVE_AVAILABLE のためリアルタイム加工画面のサーバー状態欄に「起動する」は表示されない',
-        });
-        skipped.push({
-          file: 'guide2-04-confirm-start.png',
-          reason: '上記のため起動確認ダイアログを表示できない',
-        });
+      } catch (e) {
+        skipped.push({ file: 'guide2-03-start-server.png', reason: String(e.message || e) });
+        skipped.push({ file: 'guide2-04-confirm-start.png', reason: String(e.message || e) });
+      } finally {
+        try {
+          await setStubInstanceStatus('LIVE_AVAILABLE');
+          await page.reload({ waitUntil: 'networkidle' });
+          await page.waitForTimeout(1500);
+        } catch (e2) {
+          console.error('stub LIVE_AVAILABLE + reload failed:', e2);
+        }
       }
 
       await shot(page, 'guide2-05-server-ready.png');
@@ -217,7 +232,25 @@ async function main() {
       await page.getByRole('button', { name: '加工開始' }).click().catch(() => {});
       await page.waitForTimeout(400);
       await shot(page, 'guide2-10-confirm-process.png');
-      await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
+      try {
+        await page.getByRole('dialog').getByRole('button', { name: 'はい' }).click();
+      } catch {
+        await page.getByRole('button', { name: 'はい' }).click();
+      }
+      try {
+        await page
+          .getByRole('button', { name: /加工処理中|接続中/ })
+          .first()
+          .waitFor({ state: 'visible', timeout: 90_000 });
+      } catch (_) {
+        /* スタブ等では WHIP 失敗で加工処理中に至らない場合あり */
+      }
+      await page.waitForTimeout(600);
+      await shot(page, 'guide2-11-processing.png');
+      try {
+        await page.getByRole('button', { name: '加工停止' }).first().waitFor({ state: 'visible', timeout: 120_000 });
+      } catch (_) {}
+      await page.waitForTimeout(600);
       await shot(page, 'guide2-11-process-running.png');
       await shot(page, 'guide2-12-preview-output.png');
       await shot(page, 'guide2-13-process-stop.png');

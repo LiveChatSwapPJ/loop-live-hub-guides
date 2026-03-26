@@ -470,6 +470,15 @@ kbd,
   margin: 0;
 }
 
+/* 同一カード内で画面例を2枚並べるとき */
+.step-shot .figure-step + .step-shot__text {
+  margin-top: 1rem;
+}
+
+.step-shot .step-shot__text + .figure-step {
+  margin-top: 0.75rem;
+}
+
 .step-shot .figure-step img {
   display: block;
   width: 100%;
