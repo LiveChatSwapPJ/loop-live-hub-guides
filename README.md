@@ -19,11 +19,13 @@ LoopLive の**ユーザー向け操作手順**を Git で管理し、**GitHub Pa
 | 順番 | 作業 | 参照 |
 |:---:|:---|:---|
 | 1 | [`LoopLiveの操作手順.md`](./LoopLiveの操作手順.md) が最新か確認・修正する | 本文・[手順書の書き方ルール](#手順書の書き方ルール本文を編集する人向け) |
-| 2 | ローカルで **スタブ API** と **フロント** を起動し、手順どおり画面を開いてキャプチャする | [ローカルで画面キャプチャを撮る](#ローカルで画面キャプチャを撮る) |
-| 3 | PNG を `assets/guides/` に保存し、[画像の命名規則](#画像アセットスクショの命名と配置)に合わせる | — |
-| 4 | 静的サイトを生成する（手作業・ジェネレータ・AI） | [AI エージェントへの指示（コピペ用）](#ai-エージェントへの指示コピペ用) |
+| 2 | ローカルで **スタブ API** と **フロント** を起動し、手順どおり画面を開いてキャプチャする（**手動**または **[AI 自律](#ai-によるサーバー起動と画面キャプチャ自律作業)**） | [ローカルで画面キャプチャを撮る](#ローカルで画面キャプチャを撮る) |
+| 3 | PNG を **`docs/assets/guides/`** に保存する（ファイル名は [`docs/index.html`](./docs/index.html) の `assets/guides/*.png` と一致。手動または AI） | [画像アセット](#画像アセットスクショの命名と配置) |
+| 4 | 静的サイトを生成・更新する（手作業・ジェネレータ・AI） | [AI エージェントへの指示（コピペ用）](#ai-エージェントへの指示コピペ用) |
 | 5 | 生成物を [`LoopLiveの操作手順.md`](./LoopLiveの操作手順.md) と突合レビューし、相違があれば **静的サイト側を修正**する（本文が正） | [静的サイトと本文の突合レビュー](#静的サイトと本文の突合レビュー) |
 | 6 | `gh-pages` や GitHub Actions で **GitHub Pages** に載せる | [GitHub Pages で公開する](#github-pages-で公開する) |
+
+※ 手順 2〜3 を **AI に一括依頼**する場合は、[AI によるサーバー起動と画面キャプチャ（自律作業）](#ai-によるサーバー起動と画面キャプチャ自律作業) のプロンプトを使う。
 
 ### 静的サイトと本文の突合レビュー
 
@@ -33,7 +35,7 @@ LoopLive の**ユーザー向け操作手順**を Git で管理し、**GitHub Pa
 - **手順表**: 各ステップの **No・操作・結果確認** が本文の表と一致するか。抜け・順序違い・文言の勝手な変更がないか。
 - **画面名**: ユーザー向け表示に置き換えた場合、[ユーザー向け資料での表記](#ユーザー向け資料での表記) と [`LoopLiveの操作手順.md`](./LoopLiveの操作手順.md) §1-1 / §1-2 と矛盾していないか。
 - **入力制約・状態表示・エラーメッセージ・注意事項**: 本文に列挙されたものが、サイト側で欠落・改変されていないか。
-- **画像**: `assets/guides/` の参照パスと、該当ステップの対応が正しいか。
+- **画像**: [`docs/index.html`](./docs/index.html) の `docs/assets/guides/` 参照と、該当ステップの対応が正しいか。
 
 レビューで本文側の誤りに気づいた場合は、**先に [`LoopLiveの操作手順.md`](./LoopLiveの操作手順.md) を直し**、そのあとサイト生成物またはテンプレートを再同期する。
 
@@ -97,9 +99,80 @@ npm start
 
 ---
 
+## AI によるサーバー起動と画面キャプチャ（自律作業）
+
+人間がブラウザを操作しなくても、**AI エージェントがターミナルでサーバーを起動し、ヘッドレスブラウザ等でスクリーンショットを取得**できるようにするための指示です。Cursor 等で **ワークスペースに `loop-live-hub-guides` / `loop-live-hub-front` / `loop-live-documents` が揃った状態**で実行する。
+
+### AI に任せること・任せないこと
+
+**任せる（自律でよい）**
+
+- `loop-live-hub-backend-stub` の `npm install` と **`npm start`（バックグラウンド）**
+- `loop-live-hub-front` の `npm install` と **`npm start`（バックグラウンド）**
+- スタブ向けの **`REACT_APP_BACKEND_API_BASE_URL=http://localhost:4010/api` の設定**（下記の条件付き）
+- `http://localhost:3000` が応答するまでの **待機**
+- [`docs/index.html`](./docs/index.html) に列挙された **`assets/guides/*.png` ファイル名**への保存（**パスは `loop-live-hub-guides/docs/assets/guides/`**）
+- **Playwright**（`npx playwright screenshot` や短いスクリプト）、**Puppeteer**、**Chromium CLI** などによる PNG 出力
+- **`loop-live-hub-guides/.env`** から `LOOP_LIVE_HUB_USER_ID` / `LOOP_LIVE_HUB_PASSWORD` を読み、**Amplify のサインイン画面に入力してログイン**する（ファイルは [`.gitignore`](./.gitignore) のため **コミットしない**）
+
+**任せない（禁止・要人間）**
+
+- **資格情報をチャットに書かせる、または README に平文で追記すること**
+- **`loop-live-hub-guides/.env` を `git add` / コミットすること**
+- **`.env.local` に Cognito の秘密や本番 URL を新規で書き込んでコミットすること**（スタブ用の API ベース URL 1 行のみの追記は、**既存ファイルが無い、または当該キーが無い場合に限り**可。既存値は上書きしない）
+- **ログイン後しか開けない画面を、認証なしで「撮れた」と偽ること**（`.env` が無い・ログインに失敗する場合は **スキップ**し、一覧で理由を記録する）
+
+### 技術的な注意（AI がハマりやすい点）
+
+- **長時間プロセス**（`npm start`）は **バックグラウンド**で起動し、別コマンドでヘルスチェックする（例: `curl http://localhost:4010/health`、PowerShell の `Invoke-WebRequest http://localhost:3000`）。
+- **Windows** ではパス・引用符に注意する（[`README` のスタブ・フロント手順](#ローカルで画面キャプチャを撮る)を優先）。
+- **Cognito ログインが必要な画面**（ポータル以降など）は、`loop-live-hub-guides/.env` の資格情報と Playwright 等で **自動ログインを試みる**。失敗時はスキップして報告する。
+- 保存先は **GitHub Pages 用の `docs/assets/guides/`**（[`docs/index.html`](./docs/index.html) の `src` と一致）。リポジトリルートの `assets/guides/` にも同じ名前でコピーする運用は任意。
+
+### コピペ用プロンプト（サーバー起動〜キャプチャ）
+
+```text
+@workspace
+あなたはターミナル操作とファイル書き込みができるエージェントとして、次を自律実行してください。
+
+【目的】
+loop-live-hub-guides/docs/index.html に記載の assets/guides/*.png と同名の PNG を、loop-live-hub-guides/docs/assets/guides/ に生成する。
+そのために loop-live-hub-backend-stub と loop-live-hub-front をローカルで起動し、ヘッドレスブラウザ（Playwright 等）でスクリーンショットを保存する。
+
+【リポジトリパス（ワークスペースルート基準）】
+- スタブ: loop-live-documents/3_Stub/loop-live-hub-backend-stub
+- フロント: loop-live-hub-front
+- 手順書サイト: loop-live-hub-guides（保存先: loop-live-hub-guides/docs/assets/guides/）
+- Cognito 用（撮影のみ・Git に含めない）: loop-live-hub-guides/.env（LOOP_LIVE_HUB_USER_ID / LOOP_LIVE_HUB_PASSWORD。雛形は .env.sample）
+
+【手順】
+1. スタブで npm install のあと npm start をバックグラウンド起動。http://localhost:4010/health が通るまで待つ。
+2. loop-live-hub-front/.env.local を開き、REACT_APP_BACKEND_API_BASE_URL が未設定なら http://localhost:4010/api を設定する。既存の値がある場合は変更しない。秘密情報を追加しない。このファイルを git add しない。
+3. フロントで npm install のあと npm start をバックグラウンド起動。http://localhost:3000 が応答するまで待つ。
+4. loop-live-hub-guides/.env が存在する場合、LOOP_LIVE_HUB_USER_ID / LOOP_LIVE_HUB_PASSWORD を読み取り、ブラウザ自動操作で Amplify のサインインを完了してから各画面へ遷移する。存在しない場合はログイン必須のキャプチャをスキップし、報告で明記する。
+5. loop-live-hub-guides/docs/index.html から src="assets/guides/....png" を正規表現等で列挙し、必要なファイル名リストを作る。
+6. 各 PNG について、対応する画面 URL を画面一覧・手順に照らして開き、viewport 幅 1280 前後でフルページまたは主要領域のスクリーンショットを保存する。ファイル名は index.html と完全一致。
+7. ログインや遷移で開けない画面は撮影をスキップし、ループ終了後に理由付きで箇条書きにする。
+8. 作業後、起動した開発サーバーを停止してよい（プロセス終了）。
+
+【禁止】
+ユーザーにパスワードをチャットで貼らせる、README に資格情報を書く、loop-live-hub-guides/.env を git にコミットする、手順にない画面を捏造する。
+
+【完了報告】
+保存した PNG の一覧、スキップしたファイル一覧、使用したコマンドの要約を書く。
+```
+
+### サイト生成プロンプトとの併用
+
+- **先に**上記でキャプチャを揃え、その後 [AI エージェントへの指示（コピペ用）](#ai-エージェントへの指示コピペ用) で `docs/index.html` と本文の突合を行う、という順が安全です。
+- 逆に、**HTML に無いファイル名で PNG だけ生成しない**（[`docs/index.html`](./docs/index.html) を正とする）。
+
+---
+
 ## 画像アセット（スクショ）の命名と配置
 
-- **配置場所**: 本リポジトリの `assets/guides/`（例: `assets/guides/guide2-05-server-ready.png`）。
+- **配置場所（GitHub Pages 用の正）**: **`docs/assets/guides/`**（[`docs/index.html`](./docs/index.html) の `src="assets/guides/..."` と一致させる）。リポジトリルートの `assets/guides/` に同じファイル名を置く運用は任意。
+- **配置場所（ルート）**: `assets/guides/`（例: `assets/guides/guide2-05-server-ready.png`）。
 - **ファイル名の形式**: `guide{手順書番号}-{ステップ番号2桁}-{英語スラッグ}.png`
   - 手順書番号: [`LoopLiveの操作手順.md`](./LoopLiveの操作手順.md) の「手順書1」〜「手順書4」→ `1`〜`4`。
   - ステップ番号: 各手順表の `No` を2桁で（例: `01`, `09`, `15`）。
@@ -111,13 +184,26 @@ npm start
 
 ---
 
+## 画面キャプチャとログイン情報（よくある質問）
+
+- **README・チャット・コミットにログイン ID／パスワードを書かないでください。** 手元の撮影用として、**Cognito ログイン用のユーザー ID とパスワードは `loop-live-hub-guides/.env` にのみ記載**します（**`.gitignore` で Git に含めない**）。初回は [`.env.sample`](./.env.sample) をコピーして `.env` を作成し、`LOOP_LIVE_HUB_USER_ID` / `LOOP_LIVE_HUB_PASSWORD` を埋めます。
+- **ポータル以降の画面**（配信・ユーザー管理・利用料金など）は、通常 **Cognito でサインイン済み**である必要があります。手動撮影では上記 `.env` のアカウント、またはチームの検証用アカウントでログインして撮影します。
+- **`loop-live-hub-backend-stub` は API のスタブ**であり、**ログイン画面（Amplify Authenticator）を自動で通すものではありません**。スタブ＋フロントだけでは、画面によっては本番／検証の認証設定に依存します。
+- **公開用手順書のスクショ**では、メールアドレス・氏名・請求金額・インスタンス ID など、**個人情報や機密になりうる表示はマスク**してください（塗りつぶし・ダミー値）。
+- **規定のファイル名**は [`docs/index.html`](./docs/index.html) 内の `assets/guides/guide*.png` と一致させます。PNG を `docs/assets/guides/` に置けば、サイト上に表示されます（未配置時は「画像未配置」と表示）。
+- **AI に撮影まで任せる**場合は [AI によるサーバー起動と画面キャプチャ（自律作業）](#ai-によるサーバー起動と画面キャプチャ自律作業) を使う。AI は **`loop-live-hub-guides/.env`** から資格情報を読み取りログインできる（ファイルはコミットしない）。
+
+---
+
 ## GitHub Pages で公開する
 
 - **料金**: 公開リポジトリであれば、GitHub Pages の利用に追加料金は基本的にかからない（利用規約・各プランの制限に従う）。
-- **手順の例**: 静的ファイルを `gh-pages` ブランチに載せる、または GitHub Actions でビルドした `dist` / `docs` を **Settings → Pages** で公開する。
-- **URL**: `https://<org-or-user>.github.io/<repo>/` 形式。サブパス配布の場合は生成物の `base` や `homepage` をリポジトリ名に合わせる。
+- **本リポジトリの静的サイト**: [`docs/index.html`](./docs/index.html) をエントリとする手順書サイトを置いている。**Settings → Pages** で **Deploy from a branch** を選び、**Branch: `main` / Folder: `/docs`** を指定すると、`https://<user-or-org>.github.io/loop-live-hub-guides/` で公開できる（リポジトリ名が `loop-live-hub-guides` の場合）。
+- **`docs/.nojekyll`**: Jekyll を無効にし、静的 HTML をそのまま配信する。
+- **画像**: GitHub Pages は **`docs/` 配下のみ**がサイトルートになる。スクリーンショットを表示する場合は **`docs/assets/guides/`** に PNG を置く（リポジトリルートの `assets/guides/` と同じファイル名でコピーして同期するとよい）。
+- その他の手順例: `gh-pages` ブランチへのデプロイ、GitHub Actions で `dist` を載せる、など。
 
-採用するジェネレータ（VitePress / Docusaurus 等）が決まったら、ビルドコマンドとデプロイワークフローをこの README に追記するとよい。
+採用するジェネレータ（VitePress / Docusaurus 等）に切り替える場合は、ビルド出力先を `docs/` または Actions のアーティファクトに合わせて更新する。
 
 ---
 
@@ -152,29 +238,31 @@ npm start
 
 ## AI エージェントへの指示（コピペ用）
 
-操作手順サイトを AI に任せるときは、**ワークスペースに本リポジトリと `loop-live-hub-front` が開かれた状態**で、次をコピーして指示に使う。
+操作手順サイトを AI に任せるときは、**ワークスペースに本リポジトリと `loop-live-hub-front`（およびスタブ用の `loop-live-documents`）が開かれた状態**で、次をコピーして指示に使う。
 
-### プロンプト例
+**推奨順**: 画面キャプチャが未整備なら、先に [AI によるサーバー起動と画面キャプチャ（自律作業）](#ai-によるサーバー起動と画面キャプチャ自律作業) のプロンプトで **`docs/assets/guides/*.png` を生成**してから、下記で `docs/index.html` と本文を突合する。
+
+### プロンプト例（静的サイトの生成・更新）
 
 ```text
 @workspace
-次のファイルを正として、ユーザー向けの操作手順サイト（静的 HTML または採用フレームワーク）を生成・更新してください。
+次のファイルを正として、ユーザー向けの操作手順サイト（loop-live-hub-guides/docs/index.html を主対象）を生成・更新してください。
 
 - 必読: loop-live-hub-guides/LoopLiveの操作手順.md（全文）
-- 画像: loop-live-hub-guides/assets/guides/ 内の guide{1-4}-{NN}-*.png（存在するもののみ参照）
-- 公開想定: GitHub Pages（サブパス配布に対応する base の設定）
+- 画像: loop-live-hub-guides/docs/assets/guides/ 内の guide{1-4}-{NN}-*.png（存在するもののみ表示。index.html の src と一致）
+- 公開想定: GitHub Pages（/docs をルート。相対パスで動くこと）
 
 要件:
 1. §1「固定情報」は用語集・ナビに利用。§2〜§5 を「手順書1」〜「手順書4」の章に分割する。
 2. 各手順は表「No | 画面 | 操作 | 結果確認」を、番号付きステップまたは表として表示する。
 3. 公開テキストでは内部コンポーネント名（PortalPage 等）とロールコードを使わず、LoopLiveの操作手順.md §1-1 / §1-2 のユーザー向け表示名に置き換える。
-4. 画像ファイルが存在するステップには img で表示する。本文に <!-- 画像: ... --> があれば従う。
+4. 画像ファイルが存在するステップには img で表示する。index.html に既に figure がある場合はパスと alt を維持する。
 5. スマホでも読めるレスポンシブ。見出し階層と余白を明確に。
 6. 本文にない仕様の追加や推測による説明はしない。
 
-生成後、loop-live-hub-guides/README.md の「静的サイトと本文の突合レビュー」に従い、LoopLiveの操作手順.md と差分がないか人間または自己レビューし、相違があれば静的サイト側を修正してください。
+生成後、loop-live-hub-guides/README.md の「静的サイトと本文の突合レビュー」に従い、LoopLiveの操作手順.md と差分がないかレビューし、相違があれば静的サイト側を修正してください。
 
-完了後、ビルド方法と GitHub Pages への載せ方を README に追記できる形で要約してください。
+完了後、変更点と GitHub Pages の確認手順を要約してください。
 ```
 
 ### 出力に求める内容（チェックリスト）
@@ -182,7 +270,7 @@ npm start
 1. **情報設計**: §1 は用語集・サイドバー。§2〜§5 は手順書1〜4の章。
 2. **表の扱い**: `No | 画面 | 操作 | 結果確認` を UI に落とし込む。
 3. **ユーザー向け文言**: [ユーザー向け資料での表記](#ユーザー向け資料での表記) 準拠。
-4. **画像**: `guide{n}-{nn}-*.png` を参照。コメント指示があれば優先。
+4. **画像**: `docs/assets/guides/guide{n}-{nn}-*.png` を参照（[`docs/index.html`](./docs/index.html）のファイル名と一致）。
 5. **レスポンシブ**: 狭い幅で表が読めること。
 6. **スタイル**: 読みやすいモダンなトーン。色は LoopLive Web に寄せてよい。
 7. **GitHub Pages**: 相対パスで動く出力（`base` をリポジトリ名に合わせる等）。
@@ -272,5 +360,10 @@ npm start
 | パス | 役割 |
 |:---|:---|
 | `LoopLiveの操作手順.md` | 操作手順の**本文**（固定情報・手順表・エラー文言）。 |
-| `assets/guides/` | 手順用スクリーンショット。 |
+| `.env.sample` | Cognito 撮影用の環境変数テンプレート（`LOOP_LIVE_HUB_USER_ID` / `LOOP_LIVE_HUB_PASSWORD`）。 |
+| `.env` | 上記をコピーした**ローカル専用**（**Git に含めない**）。 |
+| `assets/guides/` | 手順用スクリーンショット（リポジトリルート・命名規則の正）。 |
+| `docs/index.html` | ユーザー向け静的サイト（`LoopLiveの操作手順.md` に基づく生成物）。 |
+| `docs/assets/css/styles.css` | 上記サイトのスタイル。 |
+| `docs/assets/guides/` | GitHub Pages 用の画像配置先（`/docs` 公開時）。 |
 | `README.md` | 本ファイル（作成手順・AI 指示・公開方針）。 |
