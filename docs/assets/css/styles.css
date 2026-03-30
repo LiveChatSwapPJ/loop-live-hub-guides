@@ -12,7 +12,7 @@
   --radius: 10px;
   --font: "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
   --mono: ui-monospace, "Cascadia Code", "Consolas", monospace;
-  --nav-width: 260px;
+  --nav-width: 288px;
 }
 
 body[data-theme="dark"] {
@@ -144,18 +144,6 @@ a:hover {
   text-decoration: none;
 }
 
-.nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
 .nav__menu-btn {
   display: none;
 }
@@ -168,33 +156,173 @@ a:hover {
     white-space: nowrap;
   }
 
-  .nav__list {
+  #navList {
     display: none;
     margin-top: 0.75rem;
     padding-top: 0.75rem;
     border-top: 1px solid var(--border);
   }
 
-  .nav--open .nav__list {
+  .nav--open #navList {
     display: block;
   }
 }
 
-.nav li {
-  margin: 0.25rem 0;
+/* 左ペイン: 手順書の切り替え（階層の第1レベル） */
+.nav__body {
+  margin: 0;
+  padding: 0;
 }
 
-.nav a {
-  display: block;
-  padding: 0.35rem 0.5rem;
-  border-radius: 6px;
+.nav__section-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted);
-  font-size: 0.9rem;
+  margin: 0 0 0.4rem;
+  padding: 0 0.15rem;
 }
-.nav a:hover {
+
+.nav__doc-switch {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav__doc-switch li {
+  margin: 0;
+}
+
+.nav__doc-link {
+  display: block;
+  padding: 0.5rem 0.65rem 0.5rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.nav__doc-link:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.nav__doc-link--current {
+  font-weight: 700;
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--text);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+
+body[data-theme="dark"] .nav__doc-link--current {
+  box-shadow: none;
+}
+
+/* 第2レベル: 折りたたみ目次 */
+.nav__toc {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.nav__toc-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  list-style: none;
+  margin: 0;
+  padding: 0.55rem 0.65rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--text);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  user-select: none;
+}
+
+.nav__toc-summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav__toc-summary::before {
+  content: "▶";
+  display: inline-block;
+  font-size: 0.55rem;
+  color: var(--accent);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.nav__toc[open] .nav__toc-summary::before {
+  transform: rotate(90deg);
+}
+
+.nav__toc-summary:hover {
+  background: var(--accent-soft);
+}
+
+.nav__toc-summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.nav__sub {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0.35rem 0.55rem 0.85rem;
+  border-left: 2px solid var(--border);
+  margin-left: 0.65rem;
+}
+
+.nav__sub li {
+  margin: 0.15rem 0;
+}
+
+.nav__sub a {
+  display: block;
+  padding: 0.38rem 0.5rem 0.38rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--muted);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.nav__sub a:hover {
   background: var(--accent-soft);
   color: var(--accent);
   text-decoration: none;
+}
+
+.nav__sub a.nav__anchor--active {
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
+}
+
+.nav__sub a[aria-current="location"] {
+  font-weight: 600;
 }
 
 main {
@@ -613,6 +741,10 @@ body[data-view="desktop"] .mobile-only {
   margin: 1.25rem 0 0.5rem;
   font-weight: 600;
   font-size: 0.9rem;
+}
+
+.guide-details__body > .guide-details__subhead:first-child {
+  margin-top: 0;
 }
 
 .guide-details .table-wrap {

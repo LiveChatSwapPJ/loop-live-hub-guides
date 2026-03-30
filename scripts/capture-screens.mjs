@@ -125,18 +125,18 @@ async function signUpScreenshots(browser) {
     const tabs = page.locator('[role="tab"]');
     if ((await tabs.count()) >= 2) await tabs.nth(1).click();
     await page.waitForTimeout(800);
-    await shot(page, 'guide1-00-access-signup.png');
+    await shot(page, 'guide1-01-access-signup.png');
 
     const dialog = page.getByRole('dialog', { name: /利用規約/i });
     await dialog.waitFor({ state: 'visible', timeout: 15000 });
 
     const scrollBox = dialog.locator('.MuiDialogContent-root').first();
-    await shot(page, 'guide1-01-terms-scroll.png');
+    await shot(page, 'guide1-02-terms-scroll.png');
     await scrollBox.evaluate((el) => {
       el.scrollTop = Math.max(0, el.scrollHeight - el.clientHeight - 2);
     });
     await page.waitForTimeout(400);
-    await shot(page, 'guide1-02-agree-terms.png');
+    await shot(page, 'guide1-03-agree-terms.png');
     await page.getByRole('button', { name: '同意する' }).click();
 
     await page.waitForTimeout(600);
@@ -144,9 +144,9 @@ async function signUpScreenshots(browser) {
     await shot(page, 'guide1-05-create-account.png');
   } catch (e) {
     for (const f of [
-      'guide1-00-access-signup.png',
-      'guide1-01-terms-scroll.png',
-      'guide1-02-agree-terms.png',
+      'guide1-01-access-signup.png',
+      'guide1-02-terms-scroll.png',
+      'guide1-03-agree-terms.png',
       'guide1-04-email-password.png',
       'guide1-05-create-account.png',
     ]) {
@@ -181,7 +181,7 @@ async function main() {
   const loggedIn = await tryLogin(page);
   if (!loggedIn) {
     for (const f of pngList) {
-      if (/^guide1-0[0-5]/.test(f)) continue;
+      if (/^guide1-0[1-5]-/.test(f)) continue;
       skipped.push({
         file: f,
         reason: '未ログイン（.env に LOOP_LIVE_HUB_USER_ID / LOOP_LIVE_HUB_PASSWORD が無い、またはログイン失敗）',
@@ -206,18 +206,18 @@ async function main() {
       await page.getByRole('button', { name: '編集' }).click();
       await page.waitForTimeout(500);
       await shot(page, 'guide1-09-role.png');
-      await shot(page, 'guide1-12-update-user.png');
+      await shot(page, 'guide1-10-update-user.png');
       await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
 
       await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
       await waitPortal(page);
-      await shot(page, 'guide1-13-portal-features.png');
+      await shot(page, 'guide1-11-portal-features.png');
       await page.getByRole('button', { name: /配信を始める/ }).first().click().catch(() => {});
       await page.waitForTimeout(600);
 
       await page.goto(`${BASE}/dashboard`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(1200);
-      await shot(page, 'guide1-18-dashboard.png');
+      await shot(page, 'guide1-12-dashboard.png');
 
       await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
       await waitPortal(page);
@@ -257,10 +257,14 @@ async function main() {
         await shot(page, 'guide2-06-camera-connect.png');
         await shot(page, 'guide2-07-camera-select.png');
         await shot(page, 'guide2-08-nose-toggle.png');
-        await shot(page, 'guide2-09-process-start.png');
+        /* 手順10〜12（OBS）→ 13〜18（加工〜停止）。HTML の手順番号とファイル番号を一致 */
+        await shot(page, 'guide2-10-obs-ws-password.png');
+        await shot(page, 'guide2-11-obs-link-settings.png');
+        await shot(page, 'guide2-12-obs-add-media-source.png');
+        await shot(page, 'guide2-13-process-start.png');
         await page.getByRole('button', { name: '加工開始' }).click().catch(() => {});
         await page.waitForTimeout(400);
-        await shot(page, 'guide2-10-confirm-process.png');
+        await shot(page, 'guide2-14-confirm-process.png');
         try {
           await page.getByRole('dialog').getByRole('button', { name: 'はい' }).click();
         } catch {
@@ -275,22 +279,17 @@ async function main() {
           /* スタブ等では WHIP 失敗で加工処理中に至らない場合あり */
         }
         await page.waitForTimeout(600);
-        await shot(page, 'guide2-11-processing.png');
+        await shot(page, 'guide2-15-processing.png');
         try {
           await page.getByRole('button', { name: '加工停止' }).first().waitFor({ state: 'visible', timeout: 120_000 });
         } catch (_) {}
         await page.waitForTimeout(600);
-        await shot(page, 'guide2-11-process-running.png');
-        await shot(page, 'guide2-12-preview-output.png');
-        await shot(page, 'guide2-13-process-stop.png');
+        await shot(page, 'guide2-16-preview-output.png');
+        await shot(page, 'guide2-17-process-stop.png');
         await page.getByRole('button', { name: '停止する' }).first().click().catch(() => {});
         await page.waitForTimeout(400);
-        await shot(page, 'guide2-14-stop-server.png');
-        await shot(page, 'guide2-15-confirm-stop.png');
+        await shot(page, 'guide2-18-stop-server.png');
         await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
-
-        await shot(page, 'guide2-16-obs-ws-password.png');
-        await shot(page, 'guide2-17-obs-add-source.png');
       }
 
       await page.goto(`${BASE}/photo-face-swap`, { waitUntil: 'networkidle' });
@@ -308,30 +307,28 @@ async function main() {
       } else skipped.push({ file: 'guide3-02-face-b.png', reason: '2つ目のファイル入力なし' });
 
       await page.waitForTimeout(300);
-      await shot(page, 'guide3-04-swap-start.png');
+      await shot(page, 'guide3-03-swap-start.png');
       await page.getByRole('button', { name: /フェイススワップする/ }).click().catch(() => {});
       await page.waitForTimeout(400);
-      await shot(page, 'guide3-05-confirm.png');
+      await shot(page, 'guide3-04-confirm.png');
       await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
-      await shot(page, 'guide3-06-history-pending.png');
-      await shot(page, 'guide3-07-history-done.png');
-      await shot(page, 'guide3-08-download.png');
+      await shot(page, 'guide3-05-history-pending.png');
+      await shot(page, 'guide3-06-history-done.png');
+      await shot(page, 'guide3-07-download.png');
 
       await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
       await shot(page, 'guide4-01-billing-link.png');
       await page.goto(`${BASE}/usage-billing`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(1200);
-      await shot(page, 'guide4-03-total-hours.png');
-      await shot(page, 'guide4-05-row-click.png');
+      await shot(page, 'guide4-02-total-hours.png');
       await page.locator('table tbody tr').first().click().catch(() => {});
       await page.waitForTimeout(500);
-      await shot(page, 'guide4-06-history-dialog.png');
+      await shot(page, 'guide4-03-history-dialog.png');
       await page.getByRole('button', { name: '閉じる' }).click().catch(() => {});
       await page.waitForTimeout(400);
-      await shot(page, 'guide4-08-photo-count.png');
 
       await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
-      await shot(page, 'guide4-09-user-mgmt-link.png');
+      await shot(page, 'guide4-04-user-mgmt.png');
       await page.goto(`${BASE}/users`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(800);
       const userSearchInput = page
@@ -341,27 +338,27 @@ async function main() {
         await userSearchInput.fill('ユーザー');
         await page.waitForTimeout(400);
       }
-      await shot(page, 'guide4-10-search.png');
+      await shot(page, 'guide4-05-search.png');
       await page.locator('text=一般ユーザーA').first().click().catch(() => page.locator('[class*="MuiCard"]').nth(1).click());
       await page.waitForTimeout(500);
-      await shot(page, 'guide4-11-user-card.png');
+      await shot(page, 'guide4-06-user-card.png');
       await page.getByRole('button', { name: '編集' }).click();
       await page.waitForTimeout(500);
-      await shot(page, 'guide4-12-edit-user.png');
-      await shot(page, 'guide4-13-name-email.png');
-      await shot(page, 'guide4-14-password.png');
-      await shot(page, 'guide4-15-role.png');
+      await shot(page, 'guide4-07-edit-user.png');
+      await shot(page, 'guide4-10-name-email.png');
+      await shot(page, 'guide4-11-password.png');
+      await shot(page, 'guide4-12-role.png');
       const updateBtn = page.getByRole('button', { name: '更新' }).first();
       await updateBtn.scrollIntoViewIfNeeded().catch(() => {});
       await page.waitForTimeout(300);
-      await shot(page, 'guide4-18-update.png');
+      await shot(page, 'guide4-08-update.png');
       await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
 
       await page.locator('text=一般ユーザーA').first().click().catch(() => {});
       await page.waitForTimeout(400);
       await page.getByRole('button', { name: '削除' }).click().catch(() => {});
       await page.waitForTimeout(400);
-      await shot(page, 'guide4-19-delete.png');
+      await shot(page, 'guide4-09-delete.png');
       await page.getByRole('button', { name: 'キャンセル' }).click().catch(() => {});
     } catch (e) {
       skipped.push({ file: '(batch)', reason: String(e.message || e) });
