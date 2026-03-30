@@ -10,7 +10,10 @@
     if (!mqMobile.matches) return;
     nav.classList.remove('nav--open');
     const btn = document.getElementById('navMenuBtn');
-    if (btn) btn.setAttribute('aria-expanded', 'false');
+    if (btn) {
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'メニューを開く');
+    }
   }
 
   nav.addEventListener('click', function (e) {

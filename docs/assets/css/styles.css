@@ -119,13 +119,19 @@ a:hover {
 .theme-toggle,
 .view-toggle,
 .nav__menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
   border: 1px solid var(--border);
   background: var(--surface);
-  color: var(--muted);
-  padding: 0.45rem 0.65rem;
+  color: var(--text);
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.9rem;
+  flex-shrink: 0;
 }
 
 .theme-toggle:hover,
@@ -133,7 +139,62 @@ a:hover {
 .nav__menu-btn:hover {
   background: var(--accent-soft);
   color: var(--accent);
+  border-color: var(--accent);
   text-decoration: none;
+}
+
+.theme-toggle__icon,
+.view-toggle__icon,
+.nav__menu-btn__icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  display: block;
+  pointer-events: none;
+}
+
+/* テーマ: ライト時は月（ダークへ）、ダーク時は太陽（ライトへ） */
+.theme-toggle__icon--for-light {
+  display: none;
+}
+body[data-theme="dark"] .theme-toggle__icon--for-light {
+  display: block;
+}
+body[data-theme="dark"] .theme-toggle__icon--for-dark {
+  display: none;
+}
+body:not([data-theme="dark"]) .theme-toggle__icon--for-dark {
+  display: block;
+}
+body:not([data-theme="dark"]) .theme-toggle__icon--for-light {
+  display: none;
+}
+
+/* 表示切替: デスクトップ時はスマホへ、モバイル表示時はPCへ */
+.view-toggle__icon--for-desktop {
+  display: none;
+}
+body[data-view="mobile"] .view-toggle__icon--for-desktop {
+  display: block;
+}
+body[data-view="mobile"] .view-toggle__icon--for-mobile {
+  display: none;
+}
+body:not([data-view="mobile"]) .view-toggle__icon--for-mobile {
+  display: block;
+}
+body:not([data-view="mobile"]) .view-toggle__icon--for-desktop {
+  display: none;
+}
+
+/* メニュー: 閉じているときはハンバーガー、開いているときは閉じる */
+.nav__menu-btn__icon--close {
+  display: none;
+}
+.nav__menu-btn[aria-expanded="true"] .nav__menu-btn__icon--open {
+  display: none;
+}
+.nav__menu-btn[aria-expanded="true"] .nav__menu-btn__icon--close {
+  display: block;
 }
 
 .nav__title a {
@@ -151,9 +212,6 @@ a:hover {
 @media (max-width: 959px) {
   .nav__menu-btn {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
   }
 
   #navList {
