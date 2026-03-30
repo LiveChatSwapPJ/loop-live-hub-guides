@@ -568,3 +568,130 @@ body[data-view="desktop"] .mobile-only {
   color: var(--accent);
   font-weight: 600;
 }
+
+/* アコーディオン（手順12付近・OBS よくあるエラー）— 既定は閉じた状態 */
+.guide-details {
+  margin: 0 0 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.guide-details__summary {
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  list-style: none;
+}
+
+.guide-details__summary::-webkit-details-marker {
+  display: none;
+}
+
+.guide-details__summary::before {
+  content: "▶";
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 0.7em;
+  transition: transform 0.15s ease;
+  vertical-align: 0.05em;
+}
+
+.guide-details[open] .guide-details__summary::before {
+  transform: rotate(90deg);
+}
+
+.guide-details__body {
+  padding: 0 1rem 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+}
+
+.guide-details__subhead {
+  margin: 1.25rem 0 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.guide-details .table-wrap {
+  margin-bottom: 0.5rem;
+}
+
+.guide-details__table th,
+.guide-details__table td {
+  font-size: 0.8rem;
+  vertical-align: top;
+}
+
+/* 手順12カード内の「よくあるエラー」（操作・結果確認のあと〜画像の前） */
+.step-shot .step-shot__text + .guide-details--in-step {
+  margin-top: 0.75rem;
+}
+
+.step-shot .guide-details--in-step + .figure-step {
+  margin-top: 0.75rem;
+}
+
+.step-shot .guide-details--in-step {
+  margin-bottom: 0;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.12);
+}
+
+body[data-theme="dark"] .step-shot .guide-details--in-step {
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+}
+
+.step-shot .guide-details--in-step .guide-details__summary {
+  padding: 0.95rem 1rem 0.95rem 0.85rem;
+  font-size: 1.02rem;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.step-shot .guide-details--in-step .guide-details__summary::before {
+  color: var(--accent);
+  font-size: 0.65em;
+  flex-shrink: 0;
+}
+
+.guide-details__summary--callout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.guide-details__summary-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.guide-details__summary-hint {
+  flex: 0 1 auto;
+  margin-left: auto;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  background: var(--surface);
+  border: 1px solid var(--accent);
+}
+
+body[data-theme="dark"] .guide-details__summary-hint {
+  background: var(--surface);
+}
+
+@media (max-width: 520px) {
+  .guide-details__summary-hint {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+}
