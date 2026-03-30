@@ -498,6 +498,60 @@ section h4 {
   margin: 0 0 1rem;
 }
 
+/* リアルタイム加工の全体フロー図 */
+.flow-diagram {
+  margin: 0.75rem 0 1.5rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 0.85rem;
+}
+
+.flow-diagram__title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0 0 0.6rem;
+}
+
+.flow-diagram__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.flow-diagram__step {
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  white-space: nowrap;
+}
+
+.flow-diagram__arrow {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+@media (max-width: 639px) {
+  .flow-diagram__inner {
+    flex-direction: column;
+    align-items: center;
+  }
+  .flow-diagram__step {
+    white-space: normal;
+    text-align: center;
+  }
+  .flow-diagram__arrow {
+    transform: rotate(90deg);
+  }
+  .flow-diagram__title {
+    text-align: center;
+  }
+}
+
 .goals {
   margin: 0;
   padding-left: 1.25rem;
