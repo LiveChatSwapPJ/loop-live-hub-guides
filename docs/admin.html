@@ -24,6 +24,12 @@
     <nav class="nav" aria-label="目次" id="tocNav">
       <div class="nav__top">
         <p class="nav__title"><a href="index.html">LoopLive 操作手順</a></p>
+        <button class="nav__menu-btn" id="navMenuBtn" type="button" aria-controls="navList" aria-expanded="false" aria-label="メニューを開く">
+          <svg class="nav__menu-btn__icon nav__menu-btn__icon--open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg class="nav__menu-btn__icon nav__menu-btn__icon--close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="nav__bottom">
         <div class="nav__actions">
           <button class="theme-toggle" id="themeToggle" type="button" aria-label="ダークモードに切り替え">
             <svg class="theme-toggle__icon theme-toggle__icon--for-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -33,9 +39,9 @@
             <svg class="view-toggle__icon view-toggle__icon--for-mobile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
             <svg class="view-toggle__icon view-toggle__icon--for-desktop" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </button>
-          <button class="nav__menu-btn" id="navMenuBtn" type="button" aria-controls="navList" aria-expanded="false" aria-label="メニューを開く">
-            <svg class="nav__menu-btn__icon nav__menu-btn__icon--open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            <svg class="nav__menu-btn__icon nav__menu-btn__icon--close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          <button class="images-toggle" id="imagesToggle" type="button" aria-label="画像を非表示に切り替え">
+            <svg class="images-toggle__icon images-toggle__icon--for-shown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="images-toggle__icon images-toggle__icon--for-hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.58 10.58A3 3 0 0 0 12 15a3 3 0 0 0 2.42-4.42"/><path d="M9.88 5.08A10.43 10.43 0 0 1 12 5c7 0 11 7 11 7a18.17 18.17 0 0 1-2.46 3.48"/><path d="M6.1 6.1C3.27 8.1 1 12 1 12s4 7 11 7a10.6 10.6 0 0 0 4.06-.81"/><path d="M14.12 14.12A3 3 0 0 1 9.88 10.2"/></svg>
           </button>
         </div>
       </div>
@@ -143,6 +149,7 @@
       const body = document.body;
       const themeToggle = document.getElementById('themeToggle');
       const viewToggle = document.getElementById('viewToggle');
+      const imagesToggle = document.getElementById('imagesToggle');
       const nav = document.getElementById('tocNav');
       const navMenuBtn = document.getElementById('navMenuBtn');
       const shotImages = Array.from(document.querySelectorAll('.step-shot img'));
@@ -186,8 +193,20 @@
         if (viewToggle) viewToggle.setAttribute('aria-label', view === 'mobile' ? 'PC表示に切り替え' : 'スマホ表示に切り替え');
         updateShotsByView(view);
       }
+      function getInitialImagesMode() {
+        const saved = localStorage.getItem('looplive-images');
+        return saved === 'hidden' ? 'hidden' : 'shown';
+      }
+      function applyImagesMode(mode) {
+        body.dataset.images = mode;
+        try { localStorage.setItem('looplive-images', mode); } catch (e) {}
+        if (imagesToggle) {
+          imagesToggle.setAttribute('aria-label', mode === 'hidden' ? '画像を表示に切り替え' : '画像を非表示に切り替え');
+        }
+      }
       applyTheme(getInitialTheme());
       applyView(getInitialView());
+      applyImagesMode(getInitialImagesMode());
       if (themeToggle) {
         themeToggle.addEventListener('click', function () {
           applyTheme(body.dataset.theme === 'dark' ? 'light' : 'dark');
@@ -196,6 +215,11 @@
       if (viewToggle) {
         viewToggle.addEventListener('click', function () {
           applyView(body.dataset.view === 'mobile' ? 'desktop' : 'mobile');
+        });
+      }
+      if (imagesToggle) {
+        imagesToggle.addEventListener('click', function () {
+          applyImagesMode(body.dataset.images === 'hidden' ? 'shown' : 'hidden');
         });
       }
       if (navMenuBtn && nav) {

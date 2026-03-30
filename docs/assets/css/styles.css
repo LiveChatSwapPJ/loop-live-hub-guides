@@ -82,6 +82,16 @@ a:hover {
   border-bottom: 1px solid var(--border);
   padding: 1rem 1.25rem;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 959px) {
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
 }
 
 @media (min-width: 960px) {
@@ -91,7 +101,7 @@ a:hover {
     height: 100vh;
     position: sticky;
     top: 0;
-    overflow-y: auto;
+    overflow: hidden;
     padding: 1.5rem 1.25rem;
   }
 }
@@ -118,6 +128,7 @@ a:hover {
 
 .theme-toggle,
 .view-toggle,
+.images-toggle,
 .nav__menu-btn {
   display: inline-flex;
   align-items: center;
@@ -145,6 +156,7 @@ a:hover {
 
 .theme-toggle__icon,
 .view-toggle__icon,
+.images-toggle__icon,
 .nav__menu-btn__icon {
   width: 1.35rem;
   height: 1.35rem;
@@ -184,6 +196,23 @@ body:not([data-view="mobile"]) .view-toggle__icon--for-mobile {
 }
 body:not([data-view="mobile"]) .view-toggle__icon--for-desktop {
   display: none;
+}
+
+/* 画像表示切替 */
+.images-toggle__icon--for-shown {
+  display: none;
+}
+body[data-images="hidden"] .images-toggle__icon--for-hidden {
+  display: block;
+}
+body[data-images="hidden"] .images-toggle__icon--for-shown {
+  display: none;
+}
+body:not([data-images="hidden"]) .images-toggle__icon--for-hidden {
+  display: none;
+}
+body:not([data-images="hidden"]) .images-toggle__icon--for-shown {
+  display: block;
 }
 
 /* メニュー: 閉じているときはハンバーガー、開いているときは閉じる */
@@ -230,6 +259,24 @@ body:not([data-view="mobile"]) .view-toggle__icon--for-desktop {
 .nav__body {
   margin: 0;
   padding: 0;
+}
+
+@media (min-width: 960px) {
+  .nav__body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.nav__bottom {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .nav__section-title {
@@ -569,6 +616,14 @@ body[data-view="desktop"] .mobile-only {
   height: auto;
   border-radius: var(--radius);
   border: 1px solid var(--border);
+}
+
+/* 画像を非表示にするモード */
+body[data-images="hidden"] .step-shot .figure-step {
+  display: none !important;
+}
+body[data-images="hidden"] .step-shot .step-shot__placeholder {
+  display: none !important;
 }
 
 .figure-step figcaption {
