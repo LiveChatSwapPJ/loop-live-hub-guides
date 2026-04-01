@@ -880,6 +880,28 @@ body[data-theme="dark"] .step-shot__notice-prominent {
 .step-shot__text--supplement {
   border-style: dashed;
 }
+
+/* 補足カード内のアコーディオン（親の accent-soft 背景と区別） */
+.step-shot--supplement .guide-details.guide-details--nested-in-supplement {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.1);
+}
+
+body[data-theme="dark"] .step-shot--supplement .guide-details.guide-details--nested-in-supplement {
+  box-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+}
+
+.step-shot--supplement .guide-details.guide-details--nested-in-supplement .guide-details__body {
+  background: var(--surface);
+  border-top-color: var(--border);
+}
+
+.step-shot--supplement .guide-details.guide-details--nested-in-supplement .guide-details__summary {
+  background: var(--surface);
+}
+
 .step-shot__ref {
   margin: 0.75rem 0 0;
   font-size: 0.85rem;
@@ -938,6 +960,28 @@ body[data-theme="dark"] .step-shot__notice-prominent {
 
 .guide-details__body > .guide-details__subhead:first-child {
   margin-top: 0;
+}
+
+.guide-details__body > .guide-details__intro {
+  margin: 0 0 0.75rem;
+  line-height: 1.65;
+}
+
+/* アコーディオン内の手順画像（複数枚縦並び） */
+.guide-details__body > .figure-step:first-of-type {
+  margin-top: 0;
+}
+
+.guide-details__body .figure-step + .figure-step {
+  margin-top: 0.75rem;
+}
+
+.guide-details__body .figure-step img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  background: var(--bg);
 }
 
 .guide-details .table-wrap {
