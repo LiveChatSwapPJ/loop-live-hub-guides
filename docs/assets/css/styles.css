@@ -774,6 +774,32 @@ body[data-images="hidden"] .step-shot .step-shot__placeholder {
   margin-bottom: 0;
 }
 
+/* 手順内の強調注意（例: OBS とブラウザの同時視聴） */
+.step-shot__notice-prominent {
+  margin: 1rem 0 0.75rem;
+  padding: 0.85rem 1rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--text);
+  border: 2px solid #c62828;
+  border-radius: var(--radius);
+  background: #fff3e0;
+}
+
+body[data-theme="dark"] .step-shot__notice-prominent {
+  border-color: #ff8a65;
+  background: rgba(255, 138, 101, 0.14);
+}
+
+.step-shot .figure-step + .figure-step {
+  margin-top: 0.75rem;
+}
+
+.step-shot__notice-prominent + .figure-step {
+  margin-top: 0.5rem;
+}
+
 .step-shot__label {
   display: inline-block;
   min-width: 5rem;
